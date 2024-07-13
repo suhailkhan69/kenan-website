@@ -1,91 +1,106 @@
-import React, { useState } from 'react';
+import React from 'react';
+import logo from '../images/kenan-logo-name.png';
+import { useSpring, animated } from '@react-spring/web';
 import { useNavigate } from 'react-router-dom';
-import './Doctor.css';
 
 const Doctor = () => {
-  const [activeTab, setActiveTab] = useState('Waiting List');
   const navigate = useNavigate();
 
-  const handleNameClick = (name) => {
-    navigate(`/patient/${name}`);
+  const containerSpring = useSpring({ 
+    opacity: 1, 
+    from: { opacity: 0 },
+    delay: 200,
+  });
+
+  const leftSpring = useSpring({
+    transform: 'translateX(0)',
+    from: { transform: 'translateX(-100%)' },
+    delay: 400,
+  });
+
+  const rightSpring = useSpring({
+    transform: 'translateX(0)',
+    from: { transform: 'translateX(100%)' },
+    delay: 600,
+  });
+
+  const logoSpring = useSpring({
+    transform: 'scale(1)',
+    from: { transform: 'scale(0)' },
+    delay: 800,
+  });
+
+  const buttonSpring = useSpring({
+    transform: 'scale(1)',
+    from: { transform: 'scale(0)' },
+    delay: 1000,
+  });
+
+  const handleSignupClick = () => {
+    navigate('/doctor/signup');
+  };
+
+  const handleLoginClick = () => {
+    navigate('/doctor/login');
   };
 
   return (
-    <div className="container">
-      <div className="sidebar">
-        <div className="profile">
-          <h3>Dr. John Doe</h3>
+    <animated.div style={{ ...styles.container, ...containerSpring }}>
+      <animated.div style={{ ...styles.left, ...leftSpring }}>
+        <animated.img src={logo} alt="Logo" style={{ ...styles.logo, ...logoSpring }} />
+      </animated.div>
+      <animated.div style={{ ...styles.right, ...rightSpring }}>
+        <div style={styles.buttonContainer}>
+          <animated.button style={{ ...styles.button, ...buttonSpring }} onClick={handleSignupClick}>
+            Doctor Signup
+          </animated.button>
+          <animated.button style={{ ...styles.button, ...buttonSpring }} onClick={handleLoginClick}>
+            Doctor Login
+          </animated.button>
         </div>
-        <ul className="menu">
-          <li className={activeTab === 'Waiting List' ? 'active' : ''} onClick={() => setActiveTab('Waiting List')}>Waiting List</li>
-          <li className={activeTab === 'Patient Files' ? 'active' : ''} onClick={() => setActiveTab('Patient Files')}>Patient Files</li>
-        </ul>
-        <button className="logout">Log Out</button>
-      </div>
-      <div className="main-content">
-        <header>
-          <h2>{activeTab}</h2>
-          <div className="search-bar">
-            <input type="text" placeholder="Search..." />
-          </div>
-        </header>
-        {activeTab === 'Waiting List' && (
-          <table>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Patient ID</th>
-                <th>Status</th>
-                <th>File</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Arlene McCoy</td>
-                <td>September 9, 2013</td>
-                <td>704.555.0127</td>
-                <td><span className="status checked-in">Checked In</span></td>
-                <td>...</td>
-              </tr>
-              <tr>
-                <td>Cody Fisher</td>
-                <td>August 2, 2013</td>
-                <td>205.555.0100</td>
-                <td><span className="status checked-in">Checked In</span></td>
-                <td>...</td>
-              </tr>
-              {/* More rows */}
-            </tbody>
-          </table>
-        )}
-        {activeTab === 'Patient Files' && (
-          <table>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Patient ID</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr onClick={() => handleNameClick('Arlene McCoy')}>
-                <td className="clickable">Arlene McCoy</td>
-                <td>September 9, 2013</td>
-                <td>704.555.0127</td>
-              </tr>
-              <tr onClick={() => handleNameClick('Cody Fisher')}>
-                <td className="clickable">Cody Fisher</td>
-                <td>August 2, 2013</td>
-                <td>205.555.0100</td>
-              </tr>
-              {/* More rows */}
-            </tbody>
-          </table>
-        )}
-      </div>
-    </div>
+      </animated.div>
+    </animated.div>
   );
+};
+
+const styles = {
+  container: {
+    display: 'flex',
+    height: '100vh',
+  },
+  left: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  right: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#189cb3',
+  },
+  logo: {
+    width: '500px',
+    height: 'auto',
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  button: {
+    padding: '10px 20px',
+    fontSize: '16px',
+    backgroundColor: '#000',
+    color: '#fff',
+    border: 'none',
+    cursor: 'pointer',
+    marginBottom: '20px',
+  },
 };
 
 export default Doctor;

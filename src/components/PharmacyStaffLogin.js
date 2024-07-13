@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import logo from '../images/kenan-logo-name.png';
 
-const AdminLogin = () => {
+const PharmacyStaffLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -34,9 +34,9 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.42.107:5001/admin/login', { email, password });
+      const response = await axios.post('http://192.168.42.107:5001/pharmacy/login', { email, password });
       console.log('Login successful', response.data);
-      navigate('/adminpage');
+      navigate('/pharmacy');
     } catch (err) {
       setError('Invalid email or password');
       console.error('Login error', err);
@@ -50,7 +50,7 @@ const AdminLogin = () => {
       </animated.div>
       <animated.div style={{ ...styles.right, ...rightSpring }}>
         <animated.div style={{ ...styles.formContainer, ...formSpring }}>
-          <h2 style={styles.heading}>ADMIN</h2>
+          <h2 style={styles.heading}>PHARMACY STAFF LOGIN</h2>
           <form onSubmit={handleSubmit}>
             {error && <div style={styles.error}>{error}</div>}
             <div style={styles.formGroup}>
@@ -155,4 +155,4 @@ const styles = {
   },
 };
 
-export default AdminLogin;
+export default PharmacyStaffLogin;
