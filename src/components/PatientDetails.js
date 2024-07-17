@@ -12,7 +12,7 @@ const PatientDetails = () => {
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
-        const response = await axios.get(`http://192.168.42.61:5001/api/patient/${patientId}`);
+        const response = await axios.get(`https://kenan-backend.onrender.com/api/patient/${patientId}`);
         setPatientData(response.data.data);
       } catch (error) {
         console.error('Error fetching patient details', error);
@@ -35,7 +35,7 @@ const PatientDetails = () => {
   const handleConfirm = async () => {
   try {
     console.log('Submitting consultation details:', { selectedOption, additionalNotes });
-    const response = await axios.post(`http://192.168.42.61:5001/api/patient/${patientId}/consultation`, {
+    const response = await axios.post(`https://kenan-backend.onrender.com/api/patient/${patientId}/consultation`, {
       selectedOption,
       additionalNotes,
     });

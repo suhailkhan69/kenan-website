@@ -7,7 +7,7 @@ const Hi = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get('http://192.168.42.61:5001/api/appointments');
+      const response = await axios.get(`https://kenan-backend.onrender.com/api/appointments`);
       console.log('API Response:', response.data); // Debugging line
       setAppointments(response.data.data);
     } catch (error) {

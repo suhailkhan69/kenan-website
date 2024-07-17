@@ -12,7 +12,7 @@ const ConsultationList = () => {
 
   const fetchConsultations = async () => {
     try {
-      const response = await axios.get('http://192.168.42.61:5001/api/consultations');
+      const response = await axios.get(`https://kenan-backend.onrender.com/api/consultations`);
       const labConsultations = response.data.data.filter(
         consultation => consultation.selectedOption === 'lab'
       );
@@ -44,7 +44,7 @@ const ConsultationList = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post(`http://192.168.42.61:5001/api/upload/${patientId}`, formData, {
+      const response = await axios.post(`https://kenan-backend.onrender.com/api/upload/${patientId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -80,7 +80,7 @@ const ConsultationList = () => {
     }
 
     try {
-      const response = await axios.patch(`http://192.168.42.61:5001/api/consultation/${consultationId}/estimated-time`, {
+      const response = await axios.patch(`https://kenan-backend.onrender.com/api/consultation/${consultationId}/estimated-time`, {
         estimatedTime,
       });
       

@@ -11,7 +11,7 @@ const DoctorPage = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get('http://192.168.42.61:5001/api/appointments');
+      const response = await axios.get(`https://kenan-backend.onrender.com/api/appointments`);
       setAppointments(response.data.data);
     } catch (error) {
       console.error('Error fetching appointments', error);
@@ -42,7 +42,7 @@ const DoctorPage = () => {
 
   const handleConsultationChange = async (appointmentId, consultationStarted) => {
     try {
-      await axios.patch(`http://192.168.42.61:5001/api/appointments/${appointmentId}/consultation-start`, { consultationStarted });
+      await axios.patch(`https://kenan-backend.onrender.com/api/appointments/${appointmentId}/consultation-start`, { consultationStarted });
       fetchAppointments(); // Refresh the list after updating the consultation status
     } catch (error) {
       console.error('Error updating consultation status', error);

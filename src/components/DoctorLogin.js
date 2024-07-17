@@ -11,7 +11,7 @@ const DoctorLogin = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.42.61:5001/doctor/login', {
+      const response = await axios.post(`https://kenan-backend.onrender.com/doctor/login`, {
         email,
         password,
         number,

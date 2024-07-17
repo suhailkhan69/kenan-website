@@ -10,7 +10,7 @@ const Pharmacy = () => {
 
   const fetchConsultations = async () => {
     try {
-      const response = await axios.get('http://192.168.42.61:5001/api/consultations');
+      const response = await axios.get(`https://kenan-backend.onrender.com/api/consultations`);
       const pharmacyConsultations = response.data.data.filter(
         consultation => consultation.selectedOption === 'pharmacy'
       );
