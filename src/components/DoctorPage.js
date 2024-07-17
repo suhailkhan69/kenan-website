@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const DoctorPage = () => {
   const { number } = useParams();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get('http://192.168.42.107:5001/api/appointments');
+      const response = await axios.get('http://192.168.42.61:5001/api/appointments');
       setAppointments(response.data.data);
     } catch (error) {
       console.error('Error fetching appointments', error);
@@ -38,6 +39,15 @@ const DoctorPage = () => {
   const filteredAppointments = doctorAppointments.filter(appointment =>
     appointment.patientId.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleConsultationChange = async (appointmentId, consultationStarted) => {
+    try {
+      await axios.patch(`http://192.168.42.61:5001/api/appointments/${appointmentId}/consultation-start`, { consultationStarted });
+      fetchAppointments(); // Refresh the list after updating the consultation status
+    } catch (error) {
+      console.error('Error updating consultation status', error);
+    }
+  };
 
   return (
     <div className="container">
@@ -138,6 +148,22 @@ const DoctorPage = () => {
           .logout-button:hover {
             background-color: #14595d;
           }
+
+          .consultation-select {
+            margin-right: 10px;
+          }
+
+          .patient-file-button {
+            background-color: #186973;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+          }
+
+          .patient-file-button:hover {
+            background-color: #14595d;
+          }
         `}
       </style>
       <div className="sidebar">
@@ -168,17 +194,37 @@ const DoctorPage = () => {
                 <tr>
                   <th>Patient Name</th>
                   <th>Date & Time</th>
+                  <th>Consultation</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredAppointments.map(appointment => (
                   <tr key={appointment._id}>
-                    <td>
-                      <Link to={`/patient/${appointment.patientId._id}`}>
-                        {appointment.patientId.name}
-                      </Link>
-                    </td>
+                    <td>{appointment.patientId.name}</td>
                     <td>{new Date(appointment.date).toLocaleString()}</td>
+                    <td>
+                      <select
+                        className="consultation-select"
+                        value={appointment.consultationStarted ? "Yes" : "No"}
+                        onChange={(e) =>
+                          handleConsultationChange(appointment._id, e.target.value === "Yes")
+                        }
+                      >
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </td>
+                    <td>
+                      {appointment.consultationStarted && (
+                        <button
+                          className="patient-file-button"
+                          onClick={() => navigate(`/patient/${appointment.patientId._id}`)}
+                        >
+                          Patient File
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

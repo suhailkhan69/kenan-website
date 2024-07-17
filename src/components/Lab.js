@@ -6,12 +6,13 @@ const ConsultationList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState({});
+  const [estimatedTimes, setEstimatedTimes] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredConsultations, setFilteredConsultations] = useState([]);
 
   const fetchConsultations = async () => {
     try {
-      const response = await axios.get('http://192.168.42.107:5001/api/consultations');
+      const response = await axios.get('http://192.168.42.61:5001/api/consultations');
       const labConsultations = response.data.data.filter(
         consultation => consultation.selectedOption === 'lab'
       );
@@ -43,7 +44,7 @@ const ConsultationList = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post(`http://192.168.42.107:5001/api/upload/${patientId}`, formData, {
+      const response = await axios.post(`http://192.168.42.61:5001/api/upload/${patientId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -61,6 +62,36 @@ const ConsultationList = () => {
     } catch (err) {
       console.error('Error uploading file:', err);
       alert('Failed to upload file');
+    }
+  };
+
+  const handleEstimatedTimeChange = (e, consultationId) => {
+    setEstimatedTimes(prevState => ({
+      ...prevState,
+      [consultationId]: e.target.value
+    }));
+  };
+
+  const handleEstimatedTimeSubmit = async (consultationId) => {
+    const estimatedTime = estimatedTimes[consultationId];
+    if (!estimatedTime) {
+      alert('No estimated time entered');
+      return;
+    }
+
+    try {
+      const response = await axios.patch(`http://192.168.42.61:5001/api/consultation/${consultationId}/estimated-time`, {
+        estimatedTime,
+      });
+      
+      if (response.data.status === "ok") {
+        alert('Estimated time updated successfully');
+      } else {
+        alert('Failed to update estimated time: ' + response.data.data);
+      }
+    } catch (err) {
+      console.error('Error updating estimated time:', err);
+      alert('Failed to update estimated time');
     }
   };
 
@@ -217,6 +248,7 @@ const ConsultationList = () => {
               <tr>
                 <th>Patient ID</th>
                 <th>Additional Notes</th>
+                <th>Estimated Time</th>
                 <th>Upload Report</th>
               </tr>
             </thead>
@@ -225,6 +257,17 @@ const ConsultationList = () => {
                 <tr key={consultation._id || index}>
                   <td>{consultation.patientId}</td>
                   <td>{consultation.additionalNotes}</td>
+                  <td>
+                    <div className="estimated-time">
+                      <input
+                        type="text"
+                        placeholder="Enter estimated time"
+                        value={estimatedTimes[consultation._id] || ''}
+                        onChange={(e) => handleEstimatedTimeChange(e, consultation._id)}
+                      />
+                      <button onClick={() => handleEstimatedTimeSubmit(consultation._id)}>Submit</button>
+                    </div>
+                  </td>
                   <td>
                     <div className="file-upload">
                       <input 

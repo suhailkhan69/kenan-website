@@ -12,7 +12,7 @@ const PatientDetails = () => {
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
-        const response = await axios.get(`http://192.168.42.107:5001/api/patient/${patientId}`);
+        const response = await axios.get(`http://192.168.42.61:5001/api/patient/${patientId}`);
         setPatientData(response.data.data);
       } catch (error) {
         console.error('Error fetching patient details', error);
@@ -33,17 +33,22 @@ const PatientDetails = () => {
   };
 
   const handleConfirm = async () => {
-    try {
-      await axios.post(`http://192.168.42.107:5001/api/patient/${patientId}/consultation`, {
-        selectedOption,
-        additionalNotes
-      });
-      alert('Consultation details submitted successfully');
-    } catch (error) {
-      console.error('Error submitting consultation details', error);
-      alert('Error submitting consultation details');
+  try {
+    console.log('Submitting consultation details:', { selectedOption, additionalNotes });
+    const response = await axios.post(`http://192.168.42.61:5001/api/patient/${patientId}/consultation`, {
+      selectedOption,
+      additionalNotes,
+    });
+    console.log('Consultation submission response:', response.data);
+    alert('Consultation details submitted successfully');
+  } catch (error) {
+    console.error('Error submitting consultation details', error);
+    if (error.response) {
+      console.error('Error response:', error.response.data);
     }
-  };
+    alert('Error submitting consultation details');
+  }
+};
 
   return (
     <div className="container">
@@ -181,7 +186,9 @@ const PatientDetails = () => {
                     cols="50"
                   />
                 </div>
-                <button onClick={handleConfirm}>Confirm</button>
+                <div className="form-group">
+                  <button onClick={handleConfirm}>Confirm</button>
+                </div>
               </div>
             </div>
           ) : (

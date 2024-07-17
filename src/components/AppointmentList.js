@@ -16,7 +16,7 @@ const AppointmentList = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get('http://192.168.42.107:5001/api/appointments');
+      const response = await axios.get('http://192.168.42.61:5001/api/appointments');
       console.log('Fetched Appointments:', response.data.data);
       setAppointments(response.data.data);
     } catch (error) {
@@ -35,7 +35,7 @@ const AppointmentList = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      const response = await axios.patch(`http://192.168.42.107:5001/api/appointments/${id}/status`, { status });
+      const response = await axios.patch(`http://192.168.42.61:5001/api/appointments/${id}/status`, { status });
       const updatedAppointment = response.data.data;
       setAppointments(prevAppointments => prevAppointments.map(appointment =>
         appointment._id === updatedAppointment._id ? updatedAppointment : appointment
@@ -47,7 +47,7 @@ const AppointmentList = () => {
 
   const updateCheckIn = async (id, checkedIn) => {
     try {
-      const response = await axios.patch(`http://192.168.42.107:5001/api/appointments/${id}/checkedin`, { checkedIn });
+      const response = await axios.patch(`http://192.168.42.61:5001/api/appointments/${id}/checkedin`, { checkedIn });
       const updatedAppointment = response.data.data;
       setAppointments(prevAppointments => prevAppointments.map(appointment =>
         appointment._id === updatedAppointment._id ? updatedAppointment : appointment
@@ -85,7 +85,7 @@ const AppointmentList = () => {
   const handleAddFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://192.168.42.107:5001/api/appointments', newAppointment);
+      await axios.post('http://192.168.42.61:5001/api/appointments', newAppointment);
       fetchAppointments();  // Fetch the updated list of appointments after adding a new one
       setShowAddForm(false);
       setNewAppointment({

@@ -34,7 +34,7 @@ const LabStaffLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.42.107:5001/lab/login', { email, password });
+      const response = await axios.post('http://192.168.42.61:5001/lab/login', { email, password });
       console.log('Login successful', response.data);
       navigate('/lab');
     } catch (err) {

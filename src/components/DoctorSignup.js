@@ -10,7 +10,7 @@ const DoctorSignup = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post('http://192.168.42.107:5001/doctor/signup', {
+      const response = await axios.post('http://192.168.42.61:5001/doctor/signup', {
         name,
         email,
         password,

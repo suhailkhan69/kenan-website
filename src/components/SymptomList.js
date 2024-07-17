@@ -7,7 +7,7 @@ const SymptomList = () => {
   useEffect(() => {
     const fetchSymptoms = async () => {
       try {
-        const response = await axios.get('http://192.168.42.107:5001/api/symptoms');
+        const response = await axios.get('http://192.168.42.61:5001/api/symptoms');
         setSymptoms(response.data.data);
       } catch (error) {
         console.error('Error fetching symptoms', error);
