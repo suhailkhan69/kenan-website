@@ -1,0 +1,50 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const ApprovedCheckedInList = () => {
+    const [appointments, setAppointments] = useState([]);
+    const [error, setError] = useState(null);
+
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.get('http://192.168.42.107:5001/api/appointments');
+        const filteredAppointments = response.data.data.filter(appointment => 
+          appointment.status === 'approved' && appointment.checkedIn === true
+        );
+        setAppointments(filteredAppointments);
+      } catch (error) {
+        console.error('Error fetching appointments', error);
+        setError(error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchAppointments(); // Fetch initially
+      const interval = setInterval(() => {
+        fetchAppointments(); // Poll every 5 seconds
+      }, 5000); // Refresh every 5 seconds
+  
+      return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, []);
+  
+    return (
+      <div>
+        <h1>heuiahrfiearjh</h1>
+        <h1>Approved and Checked-In Appointments</h1>
+        {error && <p>Error fetching appointments: {error.message}</p>}
+        <ul>
+          {appointments.map(appointment => (
+            <li key={appointment._id}>
+              <p>Doctor: {appointment.doctor}</p>
+              <p>Date: {new Date(appointment.date).toLocaleString()}</p>
+              <p>Patient ID: {appointment.patientId}</p>
+              <p>Status: {appointment.status}</p>
+              <p>Checked In: {appointment.checkedIn ? 'Yes' : 'No'}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+export default ApprovedCheckedInList;

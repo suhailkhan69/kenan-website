@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/kenan-website/static/css/main.658a1952.css",
+    "main.js": "/kenan-website/static/js/main.4fbd6135.js",
+    "static/js/453.a481ddf9.chunk.js": "/kenan-website/static/js/453.a481ddf9.chunk.js",
+    "static/media/kenan-logo-name.png": "/kenan-website/static/media/kenan-logo-name.44072e05eff9e4f492de.png",
+    "static/media/ApprovedCheckedInList": "/kenan-website/static/media/ApprovedCheckedInList.93ae817a0af04a3f2f1e",
+    "index.html": "/kenan-website/index.html",
+    "main.658a1952.css.map": "/kenan-website/static/css/main.658a1952.css.map",
+    "main.4fbd6135.js.map": "/kenan-website/static/js/main.4fbd6135.js.map",
+    "453.a481ddf9.chunk.js.map": "/kenan-website/static/js/453.a481ddf9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.658a1952.css",
+    "static/js/main.4fbd6135.js"
+  ]
+}
